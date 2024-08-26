@@ -6,88 +6,102 @@
 	},
 	"item": [
 		{
-			"name": "restaurants",
+			"name": "GET /restaurants",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:5555/restaurants",
 					"protocol": "http",
-					"host": [
-						"localhost"
-					],
+					"host": ["localhost"],
 					"port": "5555",
-					"path": [
-						"restaurants"
-					]
+					"path": ["restaurants"]
 				}
 			},
-			"response": []
-		},
-		{
-			"name": "pizzas",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5555/pizzas",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5555",
-					"path": [
-						"pizzas"
-					]
+			"response": [
+				{
+					"status": "200 OK",
+					"body": "[\n  {\n    \"address\": \"address1\",\n    \"id\": 1,\n    \"name\": \"Karen's Pizza Shack\"\n  },\n  {\n    \"address\": \"address2\",\n    \"id\": 2,\n    \"name\": \"Sanjay's Pizza\"\n  },\n  {\n    \"address\": \"address3\",\n    \"id\": 3,\n    \"name\": \"Kiki's Pizza\"\n  }\n]"
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "restaurants/<int:id>",
+			"name": "GET /restaurants/:id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:5555/restaurants/1",
 					"protocol": "http",
-					"host": [
-						"localhost"
-					],
+					"host": ["localhost"],
 					"port": "5555",
-					"path": [
-						"restaurants",
-						"1"
-					]
+					"path": ["restaurants", "1"]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"status": "200 OK",
+					"body": "{\n  \"address\": \"address1\",\n  \"id\": 1,\n  \"name\": \"Karen's Pizza Shack\",\n  \"restaurant_pizzas\": [\n    {\n      \"id\": 1,\n      \"pizza\": {\n        \"id\": 1,\n        \"ingredients\": \"Dough, Tomato Sauce, Cheese\",\n        \"name\": \"Emma\"\n      },\n      \"pizza_id\": 1,\n      \"price\": 1,\n      \"restaurant_id\": 1\n    }\n  ]\n}"
+				},
+				{
+					"status": "404 Not Found",
+					"body": "{\n  \"error\": \"Restaurant not found\"\n}"
+				}
+			]
 		},
 		{
-			"name": "restaurants/<int:id>",
+			"name": "DELETE /restaurants/:id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:5555/restaurants/1",
 					"protocol": "http",
-					"host": [
-						"localhost"
-					],
+					"host": ["localhost"],
 					"port": "5555",
-					"path": [
-						"restaurants",
-						"1"
-					]
+					"path": ["restaurants", "1"]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"status": "204 No Content"
+				},
+				{
+					"status": "404 Not Found",
+					"body": "{\n  \"error\": \"Restaurant not found\"\n}"
+				}
+			]
 		},
 		{
-			"name": "restaurant_pizzas",
+			"name": "GET /pizzas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5555/pizzas",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "5555",
+					"path": ["pizzas"]
+				}
+			},
+			"response": [
+				{
+					"status": "200 OK",
+					"body": "[\n  {\n    \"id\": 1,\n    \"ingredients\": \"Dough, Tomato Sauce, Cheese\",\n    \"name\": \"Emma\"\n  },\n  {\n    \"id\": 2,\n    \"ingredients\": \"Dough, Tomato Sauce, Cheese, Pepperoni\",\n    \"name\": \"Geri\"\n  },\n  {\n    \"id\": 3,\n    \"ingredients\": \"Dough, Sauce, Ricotta, Red peppers, Mustard\",\n    \"name\": \"Melanie\"\n  }\n]"
+				}
+			]
+		},
+		{
+			"name": "POST /restaurant_pizzas",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"price\": 5,\n  \"pizza_id\": 1,\n  \"restaurant_id\": 3\n}",
@@ -100,16 +114,21 @@
 				"url": {
 					"raw": "http://localhost:5555/restaurant_pizzas",
 					"protocol": "http",
-					"host": [
-						"localhost"
-					],
+					"host": ["localhost"],
 					"port": "5555",
-					"path": [
-						"restaurant_pizzas"
-					]
+					"path": ["restaurant_pizzas"]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"status": "201 Created",
+					"body": "{\n  \"id\": 4,\n  \"pizza\": {\n    \"id\": 1,\n    \"ingredients\": \"Dough, Tomato Sauce, Cheese\",\n    \"name\": \"Emma\"\n  },\n  \"pizza_id\": 1,\n  \"price\": 5,\n  \"restaurant\": {\n    \"address\": \"address3\",\n    \"id\": 3,\n    \"name\": \"Kiki's Pizza\"\n  },\n  \"restaurant_id\": 3\n}"
+				},
+				{
+					"status": "400 Bad Request",
+					"body": "{\n  \"errors\": [\"validation errors\"]\n}"
+				}
+			]
 		}
 	]
 }
